@@ -1,22 +1,23 @@
 package ua.com.foxminded.formula1.service;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileReader implements Reader {
 
-    public List<String> read(String fileName) {
-        Path file = Paths.get(fileName);
+    public List<String> read(String fileName) throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
         List<String> content = new ArrayList<>();
 
         try {
-            content = Files.readAllLines(file);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+            File file = new File(classLoader.getResource(fileName).getFile());
+            content = Files.readAllLines(file.toPath());
+        } catch (IOException exc) {
+            throw new FileNotFoundException("File " + fileName + " was not found. Check the file and try again");
         }
         return content;
     }
