@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.StringJoiner;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ua.com.foxminded.formula1.model.Race;
 import ua.com.foxminded.formula1.model.RaceRecord;
@@ -12,87 +14,77 @@ import ua.com.foxminded.formula1.model.Racer;
 public class GridFormatterTest {
 
     private static final String NL = System.lineSeparator();
+    private static final String RACE_DATE = "2018-05-24";
     private Formatter<Map <String, Race>> formatter = new GridFormatter();
+    private Map<String, Race> input;
+
+    @BeforeEach
+    void initInput() {
+        input = new LinkedHashMap<>();
+        input.put(RACE_DATE, new Race(RACE_DATE));
+    }
 
     @Test
     void shouldSortGridProperly() {
-        Map<String, Race> input = new LinkedHashMap<>();
-        input.put("2018-05-24", new Race("2018-05-24"));
-        input.get("2018-05-24").addRecord(new Racer("DRR", "Daniel Ricciardo", "RED BULL RACING TAG HEUER"),
-                new RaceRecord("12:14:12.054", "12:15:24.067"));
-        input.get("2018-05-24").addRecord(new Racer("SVF", "Sebastian Vettel", "FERRARI"),
-                new RaceRecord("12:02:58.917", "12:04:03.332"));
-        input.get("2018-05-24").addRecord(new Racer("LHM", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
+        initInputSortedRaceGrid();
 
-        String expected = "Race: 2018-05-24" + NL
-                + "1. Sebastian Vettel | FERRARI | 01:04.415" + NL
-                + "2. Daniel Ricciardo | RED BULL RACING TAG HEUER | 01:12.013" + NL
-                + "3. Lewis Hamilton | MERCEDES | 01:12.460";
+        String expected = initExpectedSortedRaceGrid();
 
         String actual = formatter.format(input);
 
         assertEquals(expected, actual);
     }
 
-    @Test
-    void shouldFormatRaceGridProperly() {
-        Map<String, Race> input = new LinkedHashMap<>();
-        input.put("2018-05-24", new Race("2018-05-24"));
-        input.get("2018-05-24").addRecord(new Racer("DRR", "Daniel Ricciardo", "RED BULL RACING TAG HEUER"),
+    private void initInputSortedRaceGrid() {
+        input.get(RACE_DATE).addRecord(new Racer("DRR", "Daniel Ricciardo", "RED BULL RACING TAG HEUER"),
                 new RaceRecord("12:14:12.054", "12:15:24.067"));
-        input.get("2018-05-24").addRecord(new Racer("SVF", "Sebastian Vettel", "FERRARI"),
+        input.get(RACE_DATE).addRecord(new Racer("SVF", "Sebastian Vettel", "FERRARI"),
                 new RaceRecord("12:02:58.917", "12:04:03.332"));
-        input.get("2018-05-24").addRecord(new Racer("LHM", "Lewis Hamilton", "MERCEDES"),
+        input.get(RACE_DATE).addRecord(new Racer("LHM", "Lewis Hamilton", "MERCEDES"),
                 new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHA", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHB", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHC", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHD", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHE", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHF", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHG", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHH", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHI", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHJ", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHK", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHL", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        input.get("2018-05-24").addRecord(new Racer("LHN", "Lewis Hamilton", "MERCEDES"),
-                new RaceRecord("12:18:20.125", "12:19:32.585"));
-        
-        String expected = "Race: 2018-05-24" + NL
+    }
+
+    private String initExpectedSortedRaceGrid() {
+        return "Race: " + RACE_DATE + NL
                 + "1. Sebastian Vettel | FERRARI | 01:04.415" + NL
                 + "2. Daniel Ricciardo | RED BULL RACING TAG HEUER | 01:12.013" + NL
-                + "3. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "4. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "5. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "6. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "7. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "8. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "9. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "10. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "11. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "12. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "13. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "14. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "15. Lewis Hamilton | MERCEDES | 01:12.460" + NL
-                + "-".repeat(72) + NL
-                + "16. Lewis Hamilton | MERCEDES | 01:12.460";
+                + "3. Lewis Hamilton | MERCEDES | 01:12.460";
+    }
+
+    @Test
+    void shouldFormatRaceGridProperly() {
+        initInputFormattedRaceGrid();
+
+        String expected = initExpectedFormattedRaceGrid();
 
         String actual = formatter.format(input);
 
         assertEquals(expected, actual);
+    }
+
+    private void initInputFormattedRaceGrid() {
+        input.get(RACE_DATE).addRecord(new Racer("DRR", "Daniel Ricciardo", "RED BULL RACING TAG HEUER"),
+                new RaceRecord("12:14:12.054", "12:15:24.067"));
+        input.get(RACE_DATE).addRecord(new Racer("SVF", "Sebastian Vettel", "FERRARI"),
+                new RaceRecord("12:02:58.917", "12:04:03.332"));
+
+        Character letter = 'M';
+        for (int i = 1; i < 15; i ++) {
+            input.get(RACE_DATE).addRecord(new Racer("LH" + (letter++).toString(), "Lewis Hamilton", "MERCEDES"),
+                    new RaceRecord("12:18:20.125", "12:19:32.585"));
+        }
+    }
+
+    private String initExpectedFormattedRaceGrid() {
+        StringJoiner joiner = new StringJoiner("");
+        joiner.add("Race: " + RACE_DATE + NL)
+              .add("1. Sebastian Vettel | FERRARI | 01:04.415" + NL)
+              .add("2. Daniel Ricciardo | RED BULL RACING TAG HEUER | 01:12.013" + NL);
+        for (int i = 3; i < 16; i ++) {
+            joiner.add(i + ". Lewis Hamilton | MERCEDES | 01:12.460" + NL);
+        }
+        joiner.add("-".repeat(72) + NL)
+              .add("16. Lewis Hamilton | MERCEDES | 01:12.460");
+        return joiner.toString();
     }
 }

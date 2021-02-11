@@ -2,11 +2,11 @@ package ua.com.foxminded.formula1.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ua.com.foxminded.formula1.exception.WrongLineFormatException;
@@ -16,9 +16,13 @@ public class DataParserTest {
     private List<String> lines;
     private DataParser dataParser = new DataParser();
 
+    @BeforeEach
+    void initInputLines() {
+        lines = new ArrayList<>();
+    }
+
     @Test
     void shouldThrowExceptionWhenWrongLinupLineLength() {
-        lines = new ArrayList<>();
         lines.add("SVF2018-05-24_12:02:58.91");
 
         Exception thrownException = assertThrows(WrongLineFormatException.class,
@@ -29,7 +33,6 @@ public class DataParserTest {
 
     @Test
     void shouldThrowExceptionWhenWrongLinupMarkupFormat() {
-        lines = new ArrayList<>();
         lines.add("SVF2018-05-24|12:02:58.917");
 
         Exception thrownException = assertThrows(WrongLineFormatException.class,
@@ -40,7 +43,6 @@ public class DataParserTest {
 
     @Test
     void shouldThrowExceptionWhenWrongLinupAbbreviationFormat() {
-        lines = new ArrayList<>();
         lines.add("S1F2018-05-24_12:02:58.917");
 
         Exception thrownException = assertThrows(WrongLineFormatException.class,
@@ -51,7 +53,6 @@ public class DataParserTest {
 
     @Test
     void shouldThrowExceptionWhenWrongLinupDateFormat() {
-        lines = new ArrayList<>();
         lines.add("SVF2018-24-14_12:02:58.917");
 
         Exception thrownException = assertThrows(WrongLineFormatException.class,
@@ -62,7 +63,6 @@ public class DataParserTest {
 
     @Test
     void shouldThrowExceptionWhenWrongLinupTimeFormat() {
-        lines = new ArrayList<>();
         lines.add("SVF2018-05-24_12:02:58:917");
 
         Exception thrownException = assertThrows(WrongLineFormatException.class,
@@ -73,7 +73,6 @@ public class DataParserTest {
 
     @Test
     void shouldProperlyParseLineup() {
-        lines = new ArrayList<>();
         lines.add("SVF2018-05-24_12:02:58.917");
         lines.add("NHR2018-05-24_12:02:49.914");
         lines.add("FAM2018-05-24_12:13:04.512");
@@ -93,7 +92,6 @@ public class DataParserTest {
     }
 
     void shouldThrowExceptionWhenWrongAbbreviationsMarkupFormat() {
-        lines = new ArrayList<>();
         lines.add("DRR Daniel Ricciardo RED BULL RACING TAG HEUER");
 
         Exception thrownException = assertThrows(WrongLineFormatException.class,
@@ -104,7 +102,6 @@ public class DataParserTest {
 
     @Test
     void shouldThrowExceptionWhenWrongAbbreviationsAbbreviationFormat() {
-        lines = new ArrayList<>();
         lines.add("D1R_Daniel Ricciardo_RED BULL RACING TAG HEUER");
 
         Exception thrownException = assertThrows(WrongLineFormatException.class,
@@ -115,7 +112,6 @@ public class DataParserTest {
 
     @Test
     void shouldThrowExceptionWhenWrongAbbreviationsNameFormat() {
-        lines = new ArrayList<>();
         lines.add("DRR_Daniel R1cciardo_RED BULL RACING TAG HEUER");
 
         Exception thrownException = assertThrows(WrongLineFormatException.class,
@@ -126,7 +122,6 @@ public class DataParserTest {
 
     @Test
     void shouldThrowExceptionWhenWrongAbbreviationsTeamFormat() {
-        lines = new ArrayList<>();
         lines.add("DRR_Daniel Ricciardo_RED BULL&RACING TAG HEUER");
 
         Exception thrownException = assertThrows(WrongLineFormatException.class,
@@ -137,7 +132,6 @@ public class DataParserTest {
 
     @Test
     void shouldProperlyParseAbbreviations() {
-        lines = new ArrayList<>();
         lines.add("DRR_Daniel Ricciardo_RED BULL RACING TAG HEUER");
         lines.add("SVF_Sebastian Vettel_FERRARI");
         lines.add("LHM_Lewis Hamilton_MERCEDES");
