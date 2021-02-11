@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
+import ua.com.foxminded.formula1.exception.AmountOfRacesMismatchException;
 import ua.com.foxminded.formula1.exception.InvalidLineupsException;
 import ua.com.foxminded.formula1.model.Race;
 import ua.com.foxminded.formula1.model.RaceRecord;
@@ -39,23 +39,18 @@ public class Championship {
     }
 
     private void validate(Map<String, Map<String, String>> starters, Map<String, Map<String, String>> finishers) {
-        boolean sizeEquals = true;
-        if (starters.size() >= finishers.size()) {
-            Iterator<Entry<String, Map<String, String>>> startersIterator = starters.entrySet().iterator();
-            Iterator<Entry<String, Map<String, String>>> finishersIterator = finishers.entrySet().iterator();
-            while (startersIterator.hasNext()) {
-                Map.Entry<String, Map<String, String>> startersEntry = startersIterator.next();
-                Map.Entry<String, Map<String, String>> finishersEntry = finishersIterator.next();
-                if (!(startersEntry.getValue().size() == finishersEntry.getValue().size())) {
-                    sizeEquals = false;
-                    break;
-                }
-            }
-        } else {
-            sizeEquals = false;
+        if (starters.size() != finishers.size()) {
+            throw new AmountOfRacesMismatchException("Amount of races in start and end logs are different!");
         }
-        if (!sizeEquals) {
-            throw new InvalidLineupsException("Amount of racers finished is greater than racers started the race!");
+
+        Iterator<Entry<String, Map<String, String>>> startersIterator = starters.entrySet().iterator();
+        Iterator<Entry<String, Map<String, String>>> finishersIterator = finishers.entrySet().iterator();
+        while (startersIterator.hasNext()) {
+            Map.Entry<String, Map<String, String>> startersEntry = startersIterator.next();
+            Map.Entry<String, Map<String, String>> finishersEntry = finishersIterator.next();
+            if (startersEntry.getValue().size() < finishersEntry.getValue().size()) {
+                throw new InvalidLineupsException("Amount of racers finished is greater than racers started the race!");
+            }
         }
     }
 
