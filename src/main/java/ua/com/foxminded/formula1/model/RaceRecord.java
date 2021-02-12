@@ -9,6 +9,7 @@ import java.time.temporal.ChronoUnit;
 public class RaceRecord implements Comparable<RaceRecord> {
 
     private static final String TIME_FORMAT = "mm:ss.SSS";
+
     private final int raceTime;
     private final String raceTimeString;
     private final String startTime;

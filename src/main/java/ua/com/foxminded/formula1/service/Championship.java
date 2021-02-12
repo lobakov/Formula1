@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import ua.com.foxminded.formula1.exception.AmountOfRacesMismatchException;
+import ua.com.foxminded.formula1.exception.RaceMismatchException;
 import ua.com.foxminded.formula1.exception.InvalidLineupsException;
 import ua.com.foxminded.formula1.model.Race;
 import ua.com.foxminded.formula1.model.RaceRecord;
@@ -35,7 +35,7 @@ public class Championship {
 
     private void validate(Map<String, Map<String, String>> starters, Map<String, Map<String, String>> finishers) {
         if (starters.size() != finishers.size()) {
-            throw new AmountOfRacesMismatchException("Amount of races in start and end logs are different!");
+            throw new RaceMismatchException("Amount of races in start and end logs are different!");
         }
 
         Iterator<Entry<String, Map<String, String>>> startersIterator = starters.entrySet().iterator();

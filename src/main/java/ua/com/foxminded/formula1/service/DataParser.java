@@ -47,37 +47,37 @@ public class DataParser {
 
     private void verifyLineupInput(List<String> lines) {
         for (String line : lines) {
-            if (!lineFormatValid(line)) {
+            if (!validateLine(line)) {
                 throw new WrongLineFormatException("Lineup has invalid record: line format mismatch!");
             }
         }
     }
 
-    private boolean lineFormatValid(String line) {
+    private boolean validateLine(String line) {
         String[] tokenizedLine = line.split(DELIMITER);
 
-        return isLineLengthValid(line) && isMarkupValid(tokenizedLine, MARKUP_LINEUP_PARTS)
-                && isLineFormatValid(tokenizedLine[LINEUP_LEFT_INDEX].substring(RACER_START, RACER_END),
+        return validateLineLength(line) && validateMarkup(tokenizedLine, MARKUP_LINEUP_PARTS)
+                && validateLineFormat(tokenizedLine[LINEUP_LEFT_INDEX].substring(RACER_START, RACER_END),
                         ABBREVIATION_PATTERN)
-                && isDateTimeFormatValid(tokenizedLine[LINEUP_LEFT_INDEX].substring(RACER_END, TIME_START - 1),
+                && validateDateTimeFormat(tokenizedLine[LINEUP_LEFT_INDEX].substring(RACER_END, TIME_START - 1),
                         DATE_FORMAT)
-                && isDateTimeFormatValid(tokenizedLine[LINEUP_RIGHT_INDEX], TIME_FORMAT);
+                && validateDateTimeFormat(tokenizedLine[LINEUP_RIGHT_INDEX], TIME_FORMAT);
     }
 
-    private boolean isLineLengthValid(String line) {
+    private boolean validateLineLength(String line) {
         return line.length() == LINE_LENGTH;
     }
 
-    private boolean isMarkupValid(String[] tokenizedLine, int length) {
+    private boolean validateMarkup(String[] tokenizedLine, int length) {
         return tokenizedLine.length == length;
     }
 
-    private boolean isLineFormatValid(String line, String pattern) {
+    private boolean validateLineFormat(String line, String pattern) {
         Pattern formatPattern = Pattern.compile(pattern);
         return formatPattern.matcher(line).matches();
     }
 
-    private boolean isDateTimeFormatValid(String dateTime, String format) {
+    private boolean validateDateTimeFormat(String dateTime, String format) {
         try {
             SimpleDateFormat dateTimeFormat = new SimpleDateFormat(format);
             dateTimeFormat.setLenient(false);
@@ -100,18 +100,18 @@ public class DataParser {
 
     private void verifyAbbreviationsInput(List<String> lines) {
         for (String line : lines) {
-            if (!abbreviationsFormatValid(line)) {
+            if (!validateAbbreviationsFormat(line)) {
                 throw new WrongLineFormatException("Abbreviations have invalid record: line format mismatch!");
             }
         }
     }
 
-    private boolean abbreviationsFormatValid(String line) {
+    private boolean validateAbbreviationsFormat(String line) {
         String[] tokenizedLine = line.split(DELIMITER);
 
-        return isMarkupValid(tokenizedLine, MARKUP_ABBREVIATION_PARTS)
-                && isLineFormatValid(tokenizedLine[ABBREVIATION_INDEX], ABBREVIATION_PATTERN)
-                && isLineFormatValid(tokenizedLine[NAME_INDEX], NAME_PATTERN)
-                && isLineFormatValid(tokenizedLine[TEAM_INDEX], TEAM_PATTERN);
+        return validateMarkup(tokenizedLine, MARKUP_ABBREVIATION_PARTS)
+                && validateLineFormat(tokenizedLine[ABBREVIATION_INDEX], ABBREVIATION_PATTERN)
+                && validateLineFormat(tokenizedLine[NAME_INDEX], NAME_PATTERN)
+                && validateLineFormat(tokenizedLine[TEAM_INDEX], TEAM_PATTERN);
     }
 }
