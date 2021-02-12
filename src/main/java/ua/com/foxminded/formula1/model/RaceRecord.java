@@ -17,7 +17,7 @@ public class RaceRecord implements Comparable<RaceRecord> {
     public RaceRecord(String start, String finish) {
         this.startTime = start;
         this.finishTime = finish;
-        this.raceTime = computeRaceTime();   
+        this.raceTime = computeRaceTime();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_FORMAT);
         Instant millis = Instant.ofEpochMilli(raceTime);
@@ -37,11 +37,11 @@ public class RaceRecord implements Comparable<RaceRecord> {
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
-            return true; 
-        } 
+            return true;
+        }
 
         if (!(obj instanceof RaceRecord)) {
-            return false; 
+            return false;
         }
         RaceRecord another = (RaceRecord) obj;
         return this.startTime.equals(another.startTime) && this.finishTime.equals(another.finishTime);

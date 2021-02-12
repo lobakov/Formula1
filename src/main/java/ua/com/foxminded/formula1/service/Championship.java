@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import ua.com.foxminded.formula1.exception.AmountOfRacesMismatchException;
 import ua.com.foxminded.formula1.exception.InvalidLineupsException;
 import ua.com.foxminded.formula1.model.Race;
@@ -19,20 +20,14 @@ public class Championship {
     public void fillSeason(Map<String, Map<String, String>> starters, Map<String, Map<String, String>> finishers) {
         validate(starters, finishers);
 
-        Race race;
-        String date;
-        String start;
-        String finish;
-        String abbreviation;
-
-        for (Map.Entry<String, Map<String, String>> entries: starters.entrySet()) {
-            date = entries.getKey();
-            race = new Race(date);
+        for (Map.Entry<String, Map<String, String>> entries : starters.entrySet()) {
+            String date = entries.getKey();
+            Race race = new Race(date);
             this.season.putIfAbsent(date, race);
-            for (Map.Entry<String, String> entry: entries.getValue().entrySet()) {
-                abbreviation = entry.getKey();
-                start = entry.getValue();
-                finish = finishers.get(date).get(abbreviation);
+            for (Map.Entry<String, String> entry : entries.getValue().entrySet()) {
+                String abbreviation = entry.getKey();
+                String start = entry.getValue();
+                String finish = finishers.get(date).get(abbreviation);
                 race.addRecord(this.roster.get(abbreviation), new RaceRecord(start, finish));
             }
         }
@@ -56,9 +51,9 @@ public class Championship {
 
     public void fillRoster(Map<String, Map<String, String>> source) {
         String abbreviation;
-        for (Map.Entry<String, Map<String, String>> entries: source.entrySet()) {
+        for (Map.Entry<String, Map<String, String>> entries : source.entrySet()) {
             abbreviation = entries.getKey();
-            for (Map.Entry<String, String> entry: entries.getValue().entrySet()) {
+            for (Map.Entry<String, String> entry : entries.getValue().entrySet()) {
                 addRacerToRoster(abbreviation, entry.getKey(), entry.getValue());
             }
         }

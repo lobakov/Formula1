@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringJoiner;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import ua.com.foxminded.formula1.model.Race;
 import ua.com.foxminded.formula1.model.RaceRecord;
 import ua.com.foxminded.formula1.model.Racer;
@@ -15,7 +17,7 @@ public class GridFormatterTest {
 
     private static final String NL = System.lineSeparator();
     private static final String RACE_DATE = "2018-05-24";
-    private Formatter<Map <String, Race>> formatter = new GridFormatter();
+    private Formatter<Map<String, Race>> formatter = new GridFormatter();
     private Map<String, Race> input;
 
     @BeforeEach
@@ -45,8 +47,7 @@ public class GridFormatterTest {
     }
 
     private String initExpectedSortedRaceGrid() {
-        return "Race: " + RACE_DATE + NL
-                + "1. Sebastian Vettel | FERRARI | 01:04.415" + NL
+        return "Race: " + RACE_DATE + NL + "1. Sebastian Vettel | FERRARI | 01:04.415" + NL
                 + "2. Daniel Ricciardo | RED BULL RACING TAG HEUER | 01:12.013" + NL
                 + "3. Lewis Hamilton | MERCEDES | 01:12.460";
     }
@@ -69,7 +70,7 @@ public class GridFormatterTest {
                 new RaceRecord("12:02:58.917", "12:04:03.332"));
 
         Character letter = 'M';
-        for (int i = 1; i < 15; i ++) {
+        for (int i = 1; i < 15; i++) {
             input.get(RACE_DATE).addRecord(new Racer("LH" + (letter++).toString(), "Lewis Hamilton", "MERCEDES"),
                     new RaceRecord("12:18:20.125", "12:19:32.585"));
         }
@@ -77,14 +78,12 @@ public class GridFormatterTest {
 
     private String initExpectedFormattedRaceGrid() {
         StringJoiner joiner = new StringJoiner("");
-        joiner.add("Race: " + RACE_DATE + NL)
-              .add("1. Sebastian Vettel | FERRARI | 01:04.415" + NL)
-              .add("2. Daniel Ricciardo | RED BULL RACING TAG HEUER | 01:12.013" + NL);
-        for (int i = 3; i < 16; i ++) {
+        joiner.add("Race: " + RACE_DATE + NL).add("1. Sebastian Vettel | FERRARI | 01:04.415" + NL)
+                .add("2. Daniel Ricciardo | RED BULL RACING TAG HEUER | 01:12.013" + NL);
+        for (int i = 3; i < 16; i++) {
             joiner.add(i + ". Lewis Hamilton | MERCEDES | 01:12.460" + NL);
         }
-        joiner.add("-".repeat(72) + NL)
-              .add("16. Lewis Hamilton | MERCEDES | 01:12.460");
+        joiner.add("-".repeat(72) + NL).add("16. Lewis Hamilton | MERCEDES | 01:12.460");
         return joiner.toString();
     }
 }

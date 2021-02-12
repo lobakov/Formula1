@@ -2,10 +2,12 @@ package ua.com.foxminded.formula1.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +27,7 @@ public class DataParserTest {
     void shouldThrowExceptionWhenWrongLinupLineLength() {
         lines.add("SVF2018-05-24_12:02:58.91");
 
-        Exception thrownException = assertThrows(WrongLineFormatException.class,
-                () -> dataParser.parseLineup(lines));
+        Exception thrownException = assertThrows(WrongLineFormatException.class, () -> dataParser.parseLineup(lines));
 
         assertEquals("Lineup has invalid record: line format mismatch!", thrownException.getMessage());
     }
@@ -35,8 +36,7 @@ public class DataParserTest {
     void shouldThrowExceptionWhenWrongLinupMarkupFormat() {
         lines.add("SVF2018-05-24|12:02:58.917");
 
-        Exception thrownException = assertThrows(WrongLineFormatException.class,
-                () -> dataParser.parseLineup(lines));
+        Exception thrownException = assertThrows(WrongLineFormatException.class, () -> dataParser.parseLineup(lines));
 
         assertEquals("Lineup has invalid record: line format mismatch!", thrownException.getMessage());
     }
@@ -45,8 +45,7 @@ public class DataParserTest {
     void shouldThrowExceptionWhenWrongLinupAbbreviationFormat() {
         lines.add("S1F2018-05-24_12:02:58.917");
 
-        Exception thrownException = assertThrows(WrongLineFormatException.class,
-                () -> dataParser.parseLineup(lines));
+        Exception thrownException = assertThrows(WrongLineFormatException.class, () -> dataParser.parseLineup(lines));
 
         assertEquals("Lineup has invalid record: line format mismatch!", thrownException.getMessage());
     }
@@ -55,8 +54,7 @@ public class DataParserTest {
     void shouldThrowExceptionWhenWrongLinupDateFormat() {
         lines.add("SVF2018-24-14_12:02:58.917");
 
-        Exception thrownException = assertThrows(WrongLineFormatException.class,
-                () -> dataParser.parseLineup(lines));
+        Exception thrownException = assertThrows(WrongLineFormatException.class, () -> dataParser.parseLineup(lines));
 
         assertEquals("Lineup has invalid record: line format mismatch!", thrownException.getMessage());
     }
@@ -65,8 +63,7 @@ public class DataParserTest {
     void shouldThrowExceptionWhenWrongLinupTimeFormat() {
         lines.add("SVF2018-05-24_12:02:58:917");
 
-        Exception thrownException = assertThrows(WrongLineFormatException.class,
-                () -> dataParser.parseLineup(lines));
+        Exception thrownException = assertThrows(WrongLineFormatException.class, () -> dataParser.parseLineup(lines));
 
         assertEquals("Lineup has invalid record: line format mismatch!", thrownException.getMessage());
     }
@@ -91,6 +88,7 @@ public class DataParserTest {
         assertEquals(expected.toString(), actual.toString());
     }
 
+    @Test
     void shouldThrowExceptionWhenWrongAbbreviationsMarkupFormat() {
         lines.add("DRR Daniel Ricciardo RED BULL RACING TAG HEUER");
 

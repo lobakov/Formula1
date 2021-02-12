@@ -22,17 +22,16 @@ public class Racer {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) { 
-            return true; 
-        } 
+        if (obj == this) {
+            return true;
+        }
 
         if (!(obj instanceof Racer)) {
-            return false; 
+            return false;
         }
         Racer another = (Racer) obj;
 
-        return this.abbreviation.equals(another.abbreviation)
-                && this.name.equals(another.name)
+        return this.abbreviation.equals(another.abbreviation) && this.name.equals(another.name)
                 && this.team.equals(another.team);
     }
 
@@ -40,7 +39,7 @@ public class Racer {
     public int hashCode() {
         int hash = 5;
         hash = 89 * hash + this.abbreviation.hashCode();
-        hash = 89 * hash + this.name.hashCode();;
+        hash = 89 * hash + this.name.hashCode();
         hash = 89 * hash + this.team.hashCode();
         return hash;
     }

@@ -1,10 +1,10 @@
 package ua.com.foxminded.formula1.exception;
 
-public class AmountOfRacesMismatchException extends RuntimeException {
+public class InvalidInputStreamException extends RuntimeException {
 
     private static final long serialVersionUID = 100L;
 
-    public AmountOfRacesMismatchException(String msg) {
+    public InvalidInputStreamException(String msg) {
         super(msg);
     }
 }

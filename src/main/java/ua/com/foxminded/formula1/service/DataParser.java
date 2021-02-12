@@ -33,16 +33,12 @@ public class DataParser {
 
     public Map<String, Map<String, String>> parseLineup(List<String> lineup) {
         verifyLineupInput(lineup);
-
         Map<String, Map<String, String>> result = new HashMap<>();
-        String racer;
-        String time;
-        String date;
 
-        for (String record: lineup) {
-            racer = record.substring(RACER_START, RACER_END);
-            date = record.substring(RACER_END, TIME_START);
-            time =  record.substring(TIME_START + 1, TIME_END);
+        for (String record : lineup) {
+            String racer = record.substring(RACER_START, RACER_END);
+            String date = record.substring(RACER_END, TIME_START);
+            String time = record.substring(TIME_START + 1, TIME_END);
             result.putIfAbsent(date, new HashMap<>());
             result.get(date).putIfAbsent(racer, time);
         }
@@ -50,7 +46,7 @@ public class DataParser {
     }
 
     private void verifyLineupInput(List<String> lines) {
-        for (String line: lines) {
+        for (String line : lines) {
             if (!lineFormatValid(line)) {
                 throw new WrongLineFormatException("Lineup has invalid record: line format mismatch!");
             }
@@ -60,29 +56,28 @@ public class DataParser {
     private boolean lineFormatValid(String line) {
         String[] tokenizedLine = line.split(DELIMITER);
 
-        return validLineLength(line)
-                && validMarkup(tokenizedLine, MARKUP_LINEUP_PARTS)
-                && validFormat(tokenizedLine[LINEUP_LEFT_INDEX]
-                                            .substring(RACER_START, RACER_END), ABBREVIATION_PATTERN)
-                && validDateTimeFormat(tokenizedLine[LINEUP_LEFT_INDEX]
-                                                    .substring(RACER_END, TIME_START - 1), DATE_FORMAT)
-                && validDateTimeFormat(tokenizedLine[LINEUP_RIGHT_INDEX], TIME_FORMAT);
+        return isLineLengthValid(line) && isMarkupValid(tokenizedLine, MARKUP_LINEUP_PARTS)
+                && isLineFormatValid(tokenizedLine[LINEUP_LEFT_INDEX].substring(RACER_START, RACER_END),
+                        ABBREVIATION_PATTERN)
+                && isDateTimeFormatValid(tokenizedLine[LINEUP_LEFT_INDEX].substring(RACER_END, TIME_START - 1),
+                        DATE_FORMAT)
+                && isDateTimeFormatValid(tokenizedLine[LINEUP_RIGHT_INDEX], TIME_FORMAT);
     }
 
-    private boolean validLineLength(String line) {
+    private boolean isLineLengthValid(String line) {
         return line.length() == LINE_LENGTH;
     }
 
-    private boolean validMarkup(String[] tokenizedLine, int length) {
+    private boolean isMarkupValid(String[] tokenizedLine, int length) {
         return tokenizedLine.length == length;
     }
 
-    private boolean validFormat(String line, String pattern) {
+    private boolean isLineFormatValid(String line, String pattern) {
         Pattern formatPattern = Pattern.compile(pattern);
         return formatPattern.matcher(line).matches();
     }
 
-    private boolean validDateTimeFormat(String dateTime, String format) {
+    private boolean isDateTimeFormatValid(String dateTime, String format) {
         try {
             SimpleDateFormat dateTimeFormat = new SimpleDateFormat(format);
             dateTimeFormat.setLenient(false);
@@ -95,19 +90,16 @@ public class DataParser {
 
     public Map<String, Map<String, String>> parseAbbreviations(List<String> abbreviations) {
         verifyAbbreviationsInput(abbreviations);
-
-        Map<String, Map<String, String>> result = new HashMap<String, Map<String, String>>();
-        String[] splitLine = new String[MARKUP_ABBREVIATION_PARTS];
-
-        for (String line: abbreviations) {
-            splitLine = line.split(DELIMITER);
+        Map<String, Map<String, String>> result = new HashMap<>();
+        for (String line : abbreviations) {
+            String[] splitLine = line.split(DELIMITER);
             result.put(splitLine[ABBREVIATION_INDEX], Map.of(splitLine[NAME_INDEX], splitLine[TEAM_INDEX]));
         }
         return result;
     }
 
     private void verifyAbbreviationsInput(List<String> lines) {
-        for (String line: lines) {
+        for (String line : lines) {
             if (!abbreviationsFormatValid(line)) {
                 throw new WrongLineFormatException("Abbreviations have invalid record: line format mismatch!");
             }
@@ -117,9 +109,9 @@ public class DataParser {
     private boolean abbreviationsFormatValid(String line) {
         String[] tokenizedLine = line.split(DELIMITER);
 
-        return validMarkup(tokenizedLine, MARKUP_ABBREVIATION_PARTS)
-                && validFormat(tokenizedLine[ABBREVIATION_INDEX], ABBREVIATION_PATTERN)
-                && validFormat(tokenizedLine[NAME_INDEX], NAME_PATTERN)
-                && validFormat(tokenizedLine[TEAM_INDEX], TEAM_PATTERN);
+        return isMarkupValid(tokenizedLine, MARKUP_ABBREVIATION_PARTS)
+                && isLineFormatValid(tokenizedLine[ABBREVIATION_INDEX], ABBREVIATION_PATTERN)
+                && isLineFormatValid(tokenizedLine[NAME_INDEX], NAME_PATTERN)
+                && isLineFormatValid(tokenizedLine[TEAM_INDEX], TEAM_PATTERN);
     }
 }

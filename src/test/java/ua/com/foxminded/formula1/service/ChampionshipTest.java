@@ -2,26 +2,26 @@ package ua.com.foxminded.formula1.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+
 import ua.com.foxminded.formula1.exception.InvalidLineupsException;
 import ua.com.foxminded.formula1.model.Race;
 import ua.com.foxminded.formula1.model.RaceRecord;
 import ua.com.foxminded.formula1.model.Racer;
 
-@TestMethodOrder(OrderAnnotation.class)
 public class ChampionshipTest {
 
     private static Map<String, Map<String, String>> startLineup;
     private static Map<String, Map<String, String>> endLineup;
     private static Map<String, Map<String, String>> abbreviations;
-    
+
     private Championship championship;
 
     @BeforeAll
@@ -38,7 +38,7 @@ public class ChampionshipTest {
         endLineup.get("2018-05-24").put("SVF", "12:04:03.332");
         endLineup.get("2018-05-24").put("LHM", "12:19:32.585");
 
-        abbreviations  = new LinkedHashMap<>();
+        abbreviations = new LinkedHashMap<>();
         abbreviations.put("DRR", new HashMap<>());
         abbreviations.get("DRR").put("Daniel Ricciardo", "RED BULL RACING TAG HEUER");
         abbreviations.put("SVF", new HashMap<>());
@@ -70,16 +70,16 @@ public class ChampionshipTest {
     @Test
     void shouldProperlyFillSeason() {
         Map<String, Race> expected = new LinkedHashMap<>();
-        
+
         expected.put("2018-05-24", new Race("2018-05-24"));
         expected.get("2018-05-24").addRecord(new Racer("DRR", "Daniel Ricciardo", "RED BULL RACING TAG HEUER"),
-                                             new RaceRecord("12:14:12.054", "12:15:24.067"));
+                new RaceRecord("12:14:12.054", "12:15:24.067"));
         expected.get("2018-05-24").addRecord(new Racer("SVF", "Sebastian Vettel", "FERRARI"),
-                                             new RaceRecord("12:02:58.917", "12:04:03.332"));
+                new RaceRecord("12:02:58.917", "12:04:03.332"));
         expected.get("2018-05-24").addRecord(new Racer("LHM", "Lewis Hamilton", "MERCEDES"),
-                                             new RaceRecord("12:18:20.125", "12:19:32.585"));
+                new RaceRecord("12:18:20.125", "12:19:32.585"));
         expected.get("2018-05-24").addRecord(new Racer("RRR", "Mr Racer", "DEFAULT TEAM"),
-                                             new RaceRecord("11:11:11.585", "12:51:11.585"));
+                new RaceRecord("11:11:11.585", "12:51:11.585"));
 
         championship.fillSeason(startLineup, endLineup);
         Map<String, Race> actual = championship.getSeason();
@@ -95,7 +95,7 @@ public class ChampionshipTest {
                 () -> championship.fillSeason(startLineup, endLineup));
 
         assertEquals("Amount of racers finished is greater than racers started the race!",
-                     thrownException.getMessage());
+                thrownException.getMessage());
 
         startLineup.get("2018-05-24").put("RRR", "11:11:11.585");
     }
