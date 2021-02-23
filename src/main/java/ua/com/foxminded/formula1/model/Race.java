@@ -18,7 +18,8 @@ public class Race {
 
     public Map<Racer, RaceRecord> getRaceGrid() {
         Map<Racer, RaceRecord> sortedGrid = new LinkedHashMap<>();
-        this.records.entrySet().stream().sorted(Map.Entry.comparingByValue())
+        this.records.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
                 .forEachOrdered(record -> sortedGrid.put(record.getKey(), record.getValue()));
         return sortedGrid;
     }
@@ -28,7 +29,6 @@ public class Race {
         if (obj == this) {
             return true;
         }
-
         if (!(obj instanceof Race)) {
             return false;
         }

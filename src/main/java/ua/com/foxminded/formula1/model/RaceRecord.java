@@ -63,7 +63,7 @@ public class RaceRecord implements Comparable<RaceRecord> {
 
     private int computeRaceTime() {
         LocalTime start = LocalTime.parse(this.startTime);
-        LocalTime end = LocalTime.parse(this.finishTime);
-        return (int) start.until(end, ChronoUnit.MILLIS);
+        LocalTime finish = LocalTime.parse(this.finishTime);
+        return (int) start.until(finish, ChronoUnit.MILLIS);
     }
 }

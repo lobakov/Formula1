@@ -15,7 +15,7 @@ public class FileReaderTest {
     private FileReader fileReader = new FileReader();
 
     @Test
-    void shouldThrowExceptionWhenFileIsMissing() throws IOException {
+    void shouldThrowExceptionWhenFileIsMissing() {
         String inputFile = "star_t.log";
 
         Exception thrownException = assertThrows(FileNotFoundException.class, () -> fileReader.read(inputFile));

@@ -24,7 +24,7 @@ public class FileReader implements Reader {
 
         List<String> content = new ArrayList<>();
         try (InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-                BufferedReader reader = new BufferedReader(streamReader);) {
+                BufferedReader reader = new BufferedReader(streamReader)) {
             String line;
             while ((line = reader.readLine()) != null) {
                 content.add(line);

@@ -18,26 +18,27 @@ public class GridFormatter implements Formatter<Map<String, Race>> {
 
     @Override
     public String format(Map<String, Race> race) {
-        int count = 0;
         StringJoiner joiner = new StringJoiner("");
 
-        for (Map.Entry<String, Race> entries : race.entrySet()) {
-            Iterator<Entry<Racer, RaceRecord>> iterator = entries.getValue().getRaceGrid().entrySet().iterator();
-            joiner.add("Race: ").add(entries.getKey()).add(NL);
+        race.forEach((date, record) -> {
+            Iterator<Entry<Racer, RaceRecord>> iterator = record.getRaceGrid().entrySet().iterator();
+            joiner.add("Race: ").add(date).add(NL);
 
+            int count = 0;
             while (iterator.hasNext()) {
                 ++count;
                 if (count == NOT_QUALIFIED) {
                     joiner.add(RESULTS_SEPARATOR).add(NL);
                 }
                 Map.Entry<Racer, RaceRecord> entry = iterator.next();
-                joiner.add(String.valueOf(count)).add(". ").add(entry.getKey().getName()).add(COLUMN_SEPARATOR)
-                        .add(entry.getKey().getTeam()).add(COLUMN_SEPARATOR).add(entry.getValue().getRaceTimeString());
+                Racer racer = entry.getKey();
+                joiner.add(String.valueOf(count)).add(". ").add(racer.getName()).add(COLUMN_SEPARATOR)
+                      .add(racer.getTeam()).add(COLUMN_SEPARATOR).add(entry.getValue().getRaceTimeString());
                 if (iterator.hasNext()) {
                     joiner.add(NL);
                 }
             }
-        }
+        });
         return joiner.toString();
     }
 }

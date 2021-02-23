@@ -21,6 +21,7 @@ public class ChampionshipTest {
     private static Map<String, Map<String, String>> startLineup;
     private static Map<String, Map<String, String>> endLineup;
     private static Map<String, Map<String, String>> abbreviations;
+    private static Map<String, Racer> roster;
 
     private Championship championship;
 
@@ -51,8 +52,8 @@ public class ChampionshipTest {
 
     @BeforeEach
     void initChampionship() {
-        this.championship = new Championship();
-        championship.fillRoster(abbreviations);
+        championship = new Championship();
+        roster = championship.getRoster(abbreviations);
     }
 
     @Test
@@ -63,7 +64,7 @@ public class ChampionshipTest {
         expected.put("RRR", new Racer("RRR", "Mr Racer", "DEFAULT TEAM"));
         expected.put("DRR", new Racer("DRR", "Daniel Ricciardo", "RED BULL RACING TAG HEUER"));
 
-        Map<String, Racer> actual = championship.getRoster();
+        Map<String, Racer> actual = roster;
         assertEquals(expected, actual);
     }
 
@@ -81,8 +82,7 @@ public class ChampionshipTest {
         expected.get("2018-05-24").addRecord(new Racer("RRR", "Mr Racer", "DEFAULT TEAM"),
                 new RaceRecord("11:11:11.585", "12:51:11.585"));
 
-        championship.fillSeason(startLineup, endLineup);
-        Map<String, Race> actual = championship.getSeason();
+        Map<String, Race> actual = championship.getSeasonResults(startLineup, endLineup, roster);
 
         assertEquals(expected, actual);
     }
@@ -92,7 +92,7 @@ public class ChampionshipTest {
         endLineup.get("2018-05-24").put("RRR", "12:51:11.585");
 
         Exception thrownException = assertThrows(InvalidLineupsException.class,
-                () -> championship.fillSeason(startLineup, endLineup));
+                () -> championship.getSeasonResults(startLineup, endLineup, roster));
 
         assertEquals("Amount of racers finished is greater than racers started the race!",
                 thrownException.getMessage());

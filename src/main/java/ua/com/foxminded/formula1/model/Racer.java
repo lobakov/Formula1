@@ -25,12 +25,10 @@ public class Racer {
         if (obj == this) {
             return true;
         }
-
         if (!(obj instanceof Racer)) {
             return false;
         }
         Racer another = (Racer) obj;
-
         return this.abbreviation.equals(another.abbreviation) && this.name.equals(another.name)
                 && this.team.equals(another.team);
     }
