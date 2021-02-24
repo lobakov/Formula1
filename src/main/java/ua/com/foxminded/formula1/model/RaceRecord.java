@@ -1,38 +1,27 @@
 package ua.com.foxminded.formula1.model;
 
-import java.time.Instant;
+import java.time.Duration;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 public class RaceRecord implements Comparable<RaceRecord> {
 
-    private static final String TIME_FORMAT = "mm:ss.SSS";
-
-    private final int raceTime;
-    private final String raceTimeString;
     private final String startTime;
     private final String finishTime;
+    private final Duration raceTime;
 
     public RaceRecord(String start, String finish) {
         this.startTime = start;
         this.finishTime = finish;
         this.raceTime = computeRaceTime();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_FORMAT);
-        Instant millis = Instant.ofEpochMilli(raceTime);
-        LocalTime localTime = LocalTime.ofInstant(millis, ZoneId.systemDefault());
-        this.raceTimeString = localTime.format(formatter);
     }
 
-    public String getRaceTimeString() {
-        return this.raceTimeString;
+    public Duration getRaceTime() {
+        return this.raceTime;
     }
 
     @Override
     public int compareTo(RaceRecord anotherRecord) {
-        return this.raceTime - anotherRecord.raceTime;
+        return this.raceTime.compareTo(anotherRecord.raceTime);
     }
 
     @Override
@@ -58,12 +47,12 @@ public class RaceRecord implements Comparable<RaceRecord> {
 
     @Override
     public String toString() {
-        return "Start: " + this.startTime + " Finish: " + this.finishTime + " Time: " + this.raceTimeString;
+        return "Start: " + this.startTime + " Finish: " + this.finishTime + " Time: " + this.raceTime.toString();
     }
 
-    private int computeRaceTime() {
+    private Duration computeRaceTime() {
         LocalTime start = LocalTime.parse(this.startTime);
         LocalTime finish = LocalTime.parse(this.finishTime);
-        return (int) start.until(finish, ChronoUnit.MILLIS);
+        return Duration.between(start, finish);
     }
 }

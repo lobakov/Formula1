@@ -13,7 +13,7 @@ public class ChampionshipService {
     private DataParser parser;
     private Formatter<Map <String, Race>> formatter;
 
-    public ChampionshipService(Reader reader, DataParser parser, Formatter formatter) {
+    public ChampionshipService(Reader reader, DataParser parser, Formatter<Map<String, Race>> formatter) {
         this.reader = reader;
         this.parser = parser;
         this.formatter = formatter;

@@ -16,11 +16,9 @@ public class Championship {
 
     public Map<String, Racer> getRoster(Map<String, Map<String, String>> abbreviations) {
         Map<String, Racer> result = new HashMap<>();
-        abbreviations.forEach((abbreviation, racer) -> {
-            racer.forEach((name, team) -> {
-                result.putIfAbsent(abbreviation, new Racer(abbreviation, name, team));
-            });
-        });
+        abbreviations.forEach((abbreviation, racer) ->
+            racer.forEach((name, team) ->
+                result.putIfAbsent(abbreviation, new Racer(abbreviation, name, team))));
         return result;
     }
 
